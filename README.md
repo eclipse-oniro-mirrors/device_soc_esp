@@ -9,7 +9,7 @@ device/soc/espressif
 ├── esp32_wrover_ie                       # 芯片SOC名称
 ├── ...                                   # 芯片SOC名称
 ├── Kconfig.liteos_m.defconfig            # kconfig 默认宏配置
-├── Kconfig.liteos_m.series               # bes系列soc配置宏
+├── Kconfig.liteos_m.series               # esp系列soc配置宏
 └── Kconfig.liteos_m.soc                  # soc kconfig配置宏
 ```
 
@@ -24,6 +24,8 @@ device/soc/espressif
    1. esp-idf安装
 
       使用安装指导请参考：(https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.1/get-started/index.html)
+
+      注：esp-idf安装可以跳过，当前已将生成好的bootloader.bin和partition-table.bin放入device\soc\espressif\esp32_wrover_ie\pack_tools文件夹中。
 
    2. esptool安装
 
@@ -101,20 +103,40 @@ device/soc/espressif
          factory,app,factory,0x10000,1M,
          ```
 
+   注：编译镜像可以跳过，当前已将生成好的bootloader.bin和partition-table.bin放入device\soc\espressif\esp32_wrover_ie\pack_tools文件夹中。
+
 ## 2.获取源码
 
-[代码获取](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/get-code/sourcecode-acquire.md)
+   [代码获取](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/get-code/sourcecode-acquire.md)
 
-提示: 可以使用 `repo` 命令来获取源码。
+   提示: 可以使用 `repo` 命令来获取源码。
+
+   下载好源码后通过下列指令下载开发板代码：
+
+   ```shell
+      $ repo init -u https://gitee.com/openharmony-sig/manifest.git -m devboard_espressif.xml --no-repo-verify
+      $ repo sync -c
+      $ repo forall -c 'git lfs pull'
+   ```
 
 ## 3.源码构建
 
    1. 执行hb set命令并选择项目`esp32_wrover_ie_demo`。
 
+      ```shell
+      $ hb set
+      ```
+
+   2. 进入kernel/liteos_m中执行make manuconfig选择Platform -> Chip -> qemu_xtensa_esp32,配置当前开发板。
+
+      ```shell
+      $ cd kernel/liteos_m/
+      $ make menuconfig
+      ```
+
    2. 执行hb clean && hb build命令构建产生 `OHOS_Image` 的可执行文件。
 
       ```shell
-      $ hb set
       $ hb clean && hb build
       ```
 
@@ -135,7 +157,7 @@ device/soc/espressif
 
    1. 下载烧录工具
 
-      烧录工具链接：https://www.espressif.com/sites/default/files/tools/flash_download_tool_v3.8.8.zip
+      烧录工具（Flash下载工具）链接：https://www.espressif.com/zh-hans/support/download/other-tools
 
    2. 使用烧录工具
 
@@ -147,6 +169,6 @@ device/soc/espressif
 
       c) 点击START开始下载。
 
-注1：如果没有手动生成bootloader.bin和分区表，可以直接使用vendor/esp/esp32/image下的bootloader.bin和分区表。
+注1：如果没有手动生成bootloader.bin和partition-table.bin，可以直接使用device\soc\espressif\esp32_wrover_ie\pack_tools下的bootloader.bin和partition-table.bin。
 
-注2：烧录用的bin文件需要按照4-4中的方法使用esptool.py工具生成。
+注2：烧录用的bin文件需要按照3-4中的方法使用esptool.py工具生成。

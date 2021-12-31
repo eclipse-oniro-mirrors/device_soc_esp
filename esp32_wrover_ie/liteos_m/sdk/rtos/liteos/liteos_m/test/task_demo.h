@@ -42,7 +42,7 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-VOID TaskSample(VOID);
+UINT32 LosAppInit(VOID);
 
 #ifdef __cplusplus
 #if __cplusplus
