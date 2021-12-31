@@ -29,14 +29,9 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "errno.h"
-#include "fcntl.h"
+#include "hal_file.h"
+#include "securec.h"
 #include "sys/stat.h"
-#include "lfs.h"
-#include "lfs_rambd.h"
 #include "fs_config.h"
 
 int HalFileOpen(const char* path, int oflag, int mode)
@@ -83,4 +78,3 @@ int HalFileSeek(int fd, int offset, unsigned int whence)
 {   
     return lseek(fd, (off_t)offset, whence);
 }
-

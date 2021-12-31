@@ -48,8 +48,13 @@ VOID BssClean(VOID)
 
 INT32 main(VOID)
 {
-    TaskSample();
-    return 0;
+    UINT32 ret;
+
+    ret = LosAppInit();
+    if (ret != LOS_OK) {
+        printf("LosAppInit failed! ERROR: 0x%x\n", ret);
+    }
+    return ret;
 }
 
 VOID MainThreadCreate(VOID)
@@ -79,7 +84,11 @@ void board_main(void)
     __asm__ __volatile__("wsr %0, CPENABLE;rsync" : : "r"(1));
 #endif
     ret = LOS_KernelInit();
+    if (ret != LOS_OK) {
+        printf("Liteos kernel init failed! ERROR: 0x%x\n", ret);
+    }
     FileSystemInit();
+    
     if (ret == LOS_OK) {
         MainThreadCreate();
         (VOID)LOS_Start();

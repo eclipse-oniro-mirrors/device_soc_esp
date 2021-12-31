@@ -36,8 +36,9 @@
 #include "utils_file.h"
 
 
-#define FS_INIT_TASK_SIZE     0x1000
-#define FS_INIT_TASK_PRIORITY 2
+#define FS_INIT_TASK_SIZE       0x1000
+#define FS_INIT_TASK_PRIORITY   2
+#define LITTLEFS_ROOTDIR_MODE   775
 
 static uint32_t g_taskId;
 
@@ -53,7 +54,7 @@ static void FileSystemEntry(void)
         return;
     }
 
-    ret = mkdir("/littlefs", 775);
+    ret = mkdir("/littlefs", LITTLEFS_ROOTDIR_MODE);
     if (ret != LOS_OK) {
         printf("Mkdir failed 0x%x.\n", ret);
         return;
@@ -63,7 +64,7 @@ static void FileSystemEntry(void)
 
 void FileSystemInit(void)
 {
-    uint32_t ret;
+    uint32_t ret = 0;
     TSK_INIT_PARAM_S taskInitParam;
 
     ret = memset_s(&taskInitParam, sizeof(TSK_INIT_PARAM_S), 0, sizeof(TSK_INIT_PARAM_S));
